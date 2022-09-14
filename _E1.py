@@ -1,0 +1,2 @@
+def boop():
+    print("boop")

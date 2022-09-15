@@ -7,3 +7,4 @@ import _E5 as e4
 if __name__ == '__main__':
     print("project start")
     e1.boop()
+    e2._init_()

@@ -8,14 +8,18 @@ from relativeNeighborhoodGraph import returnRNG as cRNG
 def _init_():
     print("starting E2")
     rawNames = pd.read_excel(io='Datasets/AlzheimersDisease.xls', sheet_name="Training Set", usecols="A")
-    Names = np.array(rawNames)
+    Names = rawNames.values.flatten()
 
-    #print(Names)
-    rawSamples = pd.read_excel(io='Datasets/AlzheimersDisease.xls', sheet_name="Training Set", usecols="B:AR").to_numpy()
-    rawProteins = pd.read_excel(io='Datasets/AlzheimersDisease.xls', sheet_name="Training Set", usecols="AS:CF").to_numpy()
+    # print(Names)
+
+    rawSamples = pd.read_excel(io='Datasets/AlzheimersDisease.xls', sheet_name="Training Set",
+                               usecols="B:AR").to_numpy()
+
+    rawProteins = pd.read_excel(io='Datasets/AlzheimersDisease.xls', sheet_name="Training Set",
+                                usecols="AS:CF").to_numpy()
     # print(rawSamples)
-    HammSamplesEmpty = np.zeros([ rawSamples.shape[0], rawSamples.shape[0] ], dtype=float)
-    HammProteinsEmpty = np.zeros([ rawProteins.shape[0], rawProteins.shape[0] ], dtype=float)
+    HammSamplesEmpty = np.zeros([rawSamples.shape[0], rawSamples.shape[0]], dtype=float)
+    HammProteinsEmpty = np.zeros([rawProteins.shape[0], rawProteins.shape[0]], dtype=float)
 
     hammingSamples = calcMatrix(data=rawSamples, matrix=HammSamplesEmpty, offset=0, type=0)
     hammingProteins = calcMatrix(data=rawProteins, matrix=HammProteinsEmpty, offset=0, type=0)
@@ -26,8 +30,8 @@ def _init_():
     genRNG(data=hammingSamples, index=Names, exportLoc="./Answers/E2SamplesRNG.xlsx")
     genRNG(data=hammingProteins, index=Names, exportLoc="./Answers/E2ProteinsRNG.xlsx")
 
-    #print(rawProteins)
-    #print(rawSamples)
+    # print(rawProteins)
+    # print(rawSamples)
 
     # just gunna use a hemming matrix
 
@@ -69,8 +73,24 @@ def genRNG(data, index, exportLoc):
     rng = cRNG.returnRNG(data)
     # print(rng)
     rng = rng.to_numpy()
+    rng = remDoubleLines(rng)
     final = pd.DataFrame(data=rng, columns=index, index=index, dtype=float)
     # print(Tcsr)
     final.to_excel(exportLoc)
     return
 
+
+def remDoubleLines(matrix):
+    X = 0
+    Y = 0
+    while X < matrix.shape[1]:
+        Y = 0
+        while Y < matrix.shape[0]:
+            if matrix[X, Y] != 0:
+                if matrix[X, Y] == matrix[Y, X]:
+                    # print(matrix[X, Y])
+                    matrix[X, Y] = 0
+            Y += 1
+        X += 1
+    # print(str(X) + " " + str(Y))
+    return matrix

@@ -3,20 +3,26 @@ import pandas as pd
 from scipy.spatial.distance import hamming, jaccard, euclidean
 from scipy.sparse.csgraph import minimum_spanning_tree
 from relativeNeighborhoodGraph import returnRNG as cRNG
+from sigfig import round
 
 
 def _init_():
     print("starting E2")
     rawNames = pd.read_excel(io='Datasets/AlzheimersDisease.xls', sheet_name="Training Set", usecols="A")
-    Names = rawNames.values.flatten()
+    NProtienes = rawNames.values.flatten()
 
-    # print(Names)
+    rawNames = pd.read_excel(io='Datasets/AlzheimersDisease.xls', sheet_name="Training Set")
+    NSamples = rawNames.columns.values.tolist()
+    NSamples = NSamples[1:]
+    print(len(NSamples))
 
     rawSamples = pd.read_excel(io='Datasets/AlzheimersDisease.xls', sheet_name="Training Set",
-                               usecols="B:AR").to_numpy()
+                               usecols="B:CF").to_numpy()
 
     rawProteins = pd.read_excel(io='Datasets/AlzheimersDisease.xls', sheet_name="Training Set",
-                                usecols="AS:CF").to_numpy()
+                                usecols="B:CF").to_numpy()
+
+    rawSamples = np.transpose(rawSamples)
     # print(rawSamples)
     HammSamplesEmpty = np.zeros([rawSamples.shape[0], rawSamples.shape[0]], dtype=float)
     HammProteinsEmpty = np.zeros([rawProteins.shape[0], rawProteins.shape[0]], dtype=float)
@@ -24,11 +30,11 @@ def _init_():
     hammingSamples = calcMatrix(data=rawSamples, matrix=HammSamplesEmpty, offset=0, type=0)
     hammingProteins = calcMatrix(data=rawProteins, matrix=HammProteinsEmpty, offset=0, type=0)
 
-    genMST(matrix=hammingSamples, index=Names, exportLoc="./Answers/E2SamplesMST.xlsx")
-    genMST(matrix=hammingProteins, index=Names, exportLoc="./Answers/E2ProteinsMST.xlsx")
+    genMST(matrix=hammingSamples, index=NSamples, exportLoc="./Answers/E2SamplesMST.xlsx")
+    genMST(matrix=hammingProteins, index=NProtienes, exportLoc="./Answers/E2ProteinsMST.xlsx")
 
-    genRNG(data=hammingSamples, index=Names, exportLoc="./Answers/E2SamplesRNG.xlsx")
-    genRNG(data=hammingProteins, index=Names, exportLoc="./Answers/E2ProteinsRNG.xlsx")
+    genRNG(data=hammingSamples, index=NSamples, exportLoc="./Answers/E2SamplesRNG.xlsx")
+    genRNG(data=hammingProteins, index=NProtienes, exportLoc="./Answers/E2ProteinsRNG.xlsx")
 
     # print(rawProteins)
     # print(rawSamples)
@@ -57,6 +63,7 @@ def calcMatrix(data, matrix, offset, type):
         while x < data.shape[0]:
             if type == 0:
                 temp = euclidean(data[i], data[x])
+                #temp = round(temp, sigfig=5)
                 # print(str(i) + " " + str(x) + " " + str(temp) + str(data[i]) + " " + str(data[x]))
             else:
                 temp = hamming(data[i], data[x]) * len(data[i])

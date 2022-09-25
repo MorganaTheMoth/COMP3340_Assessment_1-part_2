@@ -16,11 +16,9 @@ def _init_():
     NSamples = NSamples[1:]
     print(len(NSamples))
 
-    rawSamples = pd.read_excel(io='Datasets/AlzheimersDisease.xls', sheet_name="Training Set",
-                               usecols="B:CF").to_numpy()
+    rawSamples = pd.read_excel(io='Datasets/AlzheimersDisease.xls', sheet_name="Training Set", usecols="B:CF").to_numpy()
 
-    rawProteins = pd.read_excel(io='Datasets/AlzheimersDisease.xls', sheet_name="Training Set",
-                                usecols="B:CF").to_numpy()
+    rawProteins = pd.read_excel(io='Datasets/AlzheimersDisease.xls', sheet_name="Training Set", usecols="B:CF").to_numpy()
 
     rawSamples = np.transpose(rawSamples)
     # print(rawSamples)

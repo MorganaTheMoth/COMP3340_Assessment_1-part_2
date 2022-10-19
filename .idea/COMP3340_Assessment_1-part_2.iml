@@ -6,6 +6,8 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="COMP3340_Assessment_1-part_3" />
+    <orderEntry type="module" module-name="COMP3340_Assessment_1-part_1" />
   </component>
   <component name="PyDocumentationSettings">
     <option name="renderExternalDocumentation" value="true" />

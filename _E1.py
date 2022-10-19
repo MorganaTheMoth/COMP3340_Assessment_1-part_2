@@ -64,7 +64,7 @@ def boop():
     # ax.bar(girlsdiscX, girlsdsicY, color='magenta', width=0.25, label='Female')
     # ax.bar_label(group1, padding=3)
     ax.legend(loc='best')
-    # ax.set_yticklabels(["Male", "Female"])
+    ax.set_ylabel("Resources visited")
     # plt.xlabel(["Male", "Female"])
     # plt.show()
 
@@ -79,6 +79,7 @@ def boop():
     # ax.bar(girlsdiscX, girlsdsicY, color='magenta', width=0.25, label='Female')
     # ax.bar_label(group1, padding=3)
     ax.legend(loc='best')
+    ax.set_ylabel("discussions participated in")
     # ax.set_yticklabels(["Male", "Female"])
     # plt.xlabel(["Male", "Female"])
     # plt.show()
@@ -86,7 +87,7 @@ def boop():
     # == Graph 3 == #
     fig = plt.figure()
     ax = fig.add_axes([0.1, 0.1, 0.8, 0.8])
-    ax.set_title('Discussion participation organised by gender')
+    ax.set_title('hands raised organised by gender')
     ax.set_yticks(np.arange(0, 151, 10))
     ax.set_xticks(np.arange(2), ('Boys', 'Girls'))
     ax.bar(boyrshndX, boyrshndY,  color='blue', width=0.99, label='Boys')
@@ -97,6 +98,8 @@ def boop():
     # ax.set_yticklabels(["Male", "Female"])
     # plt.xlabel(["Male", "Female"])
     # plt.show()
+    ax.set_ylabel("hands raised")
+
 
     # == Scatter plots == #
     fig = plt.figure()
@@ -135,6 +138,106 @@ def boop():
     ax.scatter(boysdiscY, boysvisY, alpha=0.2, color="blue")
     ax.scatter(girlsdsicY, girlsvisY, alpha=0.2, color="pink")
 
-    plt.show()
+    #plt.show()
 
+    # == for preformance == #
+    # splitting the data
+    ApreformX = data2.loc[data2['SectionID'] == 'A']
+    ApreformY = ApreformX['Discussion'].to_numpy()
+    ApreformX = ApreformX['SectionID'].to_numpy()
+
+    BpreformX = data2.loc[data2['SectionID'] == 'B']
+    BpreformY = BpreformX['Discussion'].to_numpy()
+    BpreformX = BpreformX['SectionID'].to_numpy()
+
+    CpreformX = data2.loc[data2['SectionID'] == 'C']
+    CpreformY = CpreformX['Discussion'].to_numpy()
+    CpreformX = CpreformX['SectionID'].to_numpy()
+
+    fig = plt.figure()
+    ax = fig.add_axes([0.1, 0.1, 0.8, 0.8])
+    ax.bar(ApreformX, ApreformY, label="A Grade")
+    ax.bar(BpreformX, BpreformY, label="B Grade")
+    ax.bar(CpreformX, CpreformY, label="C Grade")
+    ax.legend(loc='best')
+    ax.set_ylabel("Discussion participation")
+
+    # splitting the data
+    ApreformX = data2.loc[data2['SectionID'] == 'A']
+    ApreformY = ApreformX['AnnouncementsView'].to_numpy()
+    ApreformX = ApreformX['SectionID'].to_numpy()
+
+    BpreformX = data2.loc[data2['SectionID'] == 'B']
+    BpreformY = BpreformX['AnnouncementsView'].to_numpy()
+    BpreformX = BpreformX['SectionID'].to_numpy()
+
+    CpreformX = data2.loc[data2['SectionID'] == 'C']
+    CpreformY = CpreformX['AnnouncementsView'].to_numpy()
+    CpreformX = CpreformX['SectionID'].to_numpy()
+
+    fig = plt.figure()
+    ax = fig.add_axes([0.1, 0.1, 0.8, 0.8])
+    ax.bar(ApreformX, ApreformY, label="A Grade")
+    ax.bar(BpreformX, BpreformY, label="B Grade")
+    ax.bar(CpreformX, CpreformY, label="C Grade")
+    ax.legend(loc='best')
+    ax.set_ylabel("Announcement views")
+
+    # splitting the data
+    ApreformX = data2.loc[data2['SectionID'] == 'A']
+    ApreformY = ApreformX['raisedhands'].to_numpy()
+    ApreformX = ApreformX['SectionID'].to_numpy()
+
+    BpreformX = data2.loc[data2['SectionID'] == 'B']
+    BpreformY = BpreformX['raisedhands'].to_numpy()
+    BpreformX = BpreformX['SectionID'].to_numpy()
+
+    CpreformX = data2.loc[data2['SectionID'] == 'C']
+    CpreformY = CpreformX['raisedhands'].to_numpy()
+    CpreformX = CpreformX['SectionID'].to_numpy()
+
+    fig = plt.figure()
+    ax = fig.add_axes([0.1, 0.1, 0.8, 0.8])
+    ax.bar(ApreformX, ApreformY, label="A Grade")
+    ax.bar(BpreformX, BpreformY, label="B Grade")
+    ax.bar(CpreformX, CpreformY, label="C Grade")
+    ax.legend(loc='best')
+    ax.set_ylabel("Hands raised")
+
+
+    #seeing if girls preform better than girls
+    GirlsPreformanceX = data2.loc[data2['Gender'] == 1]
+    GirlsPreformanceY = GirlsPreformanceX['SectionID'].to_numpy()
+    GirlsPreformanceX = GirlsPreformanceX['Gender'].to_numpy()
+    BoysPreformanceX = data2.loc[data2['Gender'] == 0]
+    BoysPreformanceY = BoysPreformanceX['SectionID'].to_numpy()
+    BoysPreformanceX = BoysPreformanceX['Gender'].to_numpy()
+    newBoysPreform = []
+    for i in BoysPreformanceY:
+        if i == 'A':
+            i = 3
+        if i == 'B':
+            i = 2
+        if i == 'C':
+            i = 1
+        newBoysPreform.append(i)
+    #BoysPreformanceY = [i == 'A' for i in BoysPreformanceY]
+    avgPreformance = sum(newBoysPreform) / len(newBoysPreform)
+    print("The average preformance for Boys: ", avgPreformance)
+
+    newGirlsPreform = []
+    for i in GirlsPreformanceY:
+        if i == 'A':
+            i = 3
+        if i == 'B':
+            i = 2
+        if i == 'C':
+            i = 1
+        newGirlsPreform.append(i)
+    #BoysPreformanceY = [i == 'A' for i in BoysPreformanceY]
+    avgGirlsPreformance = sum(newGirlsPreform) / len(newGirlsPreform)
+    print("The average preformance for Girls: ", avgGirlsPreformance)
+
+    # ax.bar(BpreformX, BpreformY, label="")
+    plt.show()
     # data2.to_csv("Test.csv")
